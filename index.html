@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zirui (Jerry) Kong - Portfolio</title>
+    <title>Zirui Kong (Jerry) - Portfolio</title>
     <style>
         :root {
             --bg-dark: #07080b;
@@ -67,13 +67,10 @@
             color: var(--text-main);
         }
 
-        /* -------------------------------------------
-           ✨ 统一使用 ease 的渐显动画 
-           ------------------------------------------- */
+        /* 渐显动画 */
         .reveal {
             opacity: 0;
             transform: translateY(20px);
-            /* 透明度和位移统一使用 1s ease，干净利落 */
             transition: opacity 1s ease, transform 1s ease;
             will-change: opacity, transform;
         }
@@ -81,7 +78,6 @@
             opacity: 1;
             transform: translateY(0);
         }
-        /* ------------------------------------------- */
 
         /* 个人信息头部 */
         .profile-header {
@@ -173,9 +169,7 @@
             padding: 2rem;
             border: 1px solid var(--border-color);
             box-sizing: border-box;
-            transition: transform 0.4s ease, 
-                        box-shadow 0.4s ease,
-                        border-color 0.4s ease;
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
             position: relative;
             overflow: hidden;
         }
@@ -211,40 +205,60 @@
 
         section { scroll-margin-top: 100px; }
 
-        /* Timeline (vertical) */
-        .card.timeline {
+        /* -------------------------------------------
+           ✨ 重新构建的 Timeline 区域 (精准对齐 + 内部滚动)
+           ------------------------------------------- */
+        .timeline-container {
             position: relative;
-            padding-left: 3rem; 
+            /* 限制最大高度，大约显示3-4条记录的高度 */
+            max-height: 250px; 
+            overflow-y: auto;
+            padding-right: 12px; /* 给滚动条留出呼吸空间 */
         }
-        .card.timeline::before {
+
+        /* 高级感半透明滚动条 */
+        .timeline-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .timeline-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .timeline-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+        }
+        .timeline-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* 绝对居中的背景虚线 */
+        .timeline-container::before {
             content: "";
             position: absolute;
-            left: 28px; 
-            top: 4.5rem; 
-            bottom: 1.5rem;
+            /* 圆点总宽14px，中心在7px，线宽2px。左偏6px即完美穿心 */
+            left: 6px; 
+            top: 8px; 
+            bottom: 0;
             width: 0;
-            border-left: 2px dashed rgba(255,255,255,0.1);
+            border-left: 2px dashed rgba(255,255,255,0.15);
+            z-index: 1;
         }
-        .card.timeline .item {
+
+        .timeline-container .item {
             position: relative;
+            padding-left: 28px; /* 文本整体右移，腾出时间轴的区域 */
+            margin-bottom: 1.8rem;
         }
-        .card.timeline .item-header {
-            display: grid;
-            grid-template-columns: 80px 1fr;
-            gap: 1rem;
-            align-items: baseline;
+        .timeline-container .item:last-child {
+            margin-bottom: 0;
         }
-        .card.timeline .item-date {
-            justify-self: start;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            font-weight: 600;
-        }
-        .card.timeline .item::before {
+
+        /* 重新定位的小红点 */
+        .timeline-container .item::before {
             content: "";
             position: absolute;
-            left: -32px; 
-            top: 0.85rem;
+            left: 0; 
+            top: 4px; /* 微调以与第一排文字垂直居中 */
             width: 8px;
             height: 8px;
             border-radius: 50%;
@@ -253,9 +267,23 @@
             z-index: 2;
         }
 
-        /* 列表项通用样式 */
-        .item { margin-bottom: 1.8rem; }
-        .item:last-child { margin-bottom: 0; }
+        .timeline-container .item-header {
+            display: grid;
+            grid-template-columns: 70px 1fr;
+            gap: 0.8rem;
+            align-items: baseline;
+        }
+        .timeline-container .item-date {
+            justify-self: start;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+        /* ------------------------------------------- */
+
+        /* 其他列表项通用样式 */
+        .item-list { margin-bottom: 1.8rem; }
+        .item-list:last-child { margin-bottom: 0; }
         .item-header-flex {
             display: flex;
             justify-content: space-between;
@@ -278,13 +306,13 @@
             margin-bottom: 0.8rem;
             font-weight: 500;
         }
-        .item ul {
+        .item-list ul {
             padding-left: 1.2rem;
             margin: 0;
             font-size: 0.95rem;
             color: var(--text-muted);
         }
-        .item li { margin-bottom: 0.5rem; }
+        .item-list li { margin-bottom: 0.5rem; }
         
         a.highlight-link {
             color: var(--accent-color);
@@ -298,10 +326,6 @@
             nav .menu { display: none; }
             .grid { grid-template-columns: 1fr; }
             .profile-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; margin-top: 2rem; }
-            .card.timeline { padding-left: 2rem; }
-            .card.timeline::before { left: 20px; top: 4rem; }
-            .card.timeline .item-header { grid-template-columns: 60px 1fr; gap: 0.5rem; }
-            .card.timeline .item::before { left: -24px; top: 0.8rem; width: 6px; height: 6px; border-width: 2px; } 
             .item-header-flex { flex-direction: column; }
         }
     </style>
@@ -356,31 +380,33 @@
                 </p>
             </section>
 
-            <section class="card timeline reveal">
+            <section class="card reveal">
                 <h2>News & Highlights</h2>
-                <div class="item">
-                    <div class="item-header">
-                        <span class="item-date">2026</span>
-                        <span style="font-size: 0.95rem;">Paper accepted to <strong style="color: var(--text-main);">ASIA CCS 2026</strong>: <em style="color: var(--text-muted);">Phantom Force: Injecting Adversarial Tactile Perceptions...</em></span>
+                <div class="timeline-container">
+                    <div class="item">
+                        <div class="item-header">
+                            <span class="item-date">2026</span>
+                            <span style="font-size: 0.95rem;">Paper accepted to <strong style="color: var(--text-main);">ASIA CCS 2026</strong>: <em style="color: var(--text-muted);">Phantom Force: Injecting Adversarial Tactile Perceptions...</em></span>
+                        </div>
                     </div>
-                </div>
-                <div class="item">
-                    <div class="item-header">
-                        <span class="item-date">2025</span>
-                        <span style="font-size: 0.95rem;">Won <strong style="color: var(--text-main);">Second Prize</strong> in Case-based Competition on Helping Disabled Learners Using Apple Vision Pro.</span>
+                    <div class="item">
+                        <div class="item-header">
+                            <span class="item-date">2025</span>
+                            <span style="font-size: 0.95rem;">Won <strong style="color: var(--text-main);">Second Prize</strong> in Case-based Competition on Helping Disabled Learners Using Apple Vision Pro.</span>
+                        </div>
                     </div>
-                </div>
-                <div class="item">
-                    <div class="item-header">
-                        <span class="item-date">2025</span>
-                        <span style="font-size: 0.95rem;">Awarded the Au Bak Ling Charity Trust Scholarship (30,000 HKD).</span>
+                    <div class="item">
+                        <div class="item-header">
+                            <span class="item-date">2025</span>
+                            <span style="font-size: 0.95rem;">Awarded the Au Bak Ling Charity Trust Scholarship (30,000 HKD).</span>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <section class="card full-width reveal" id="publications">
                 <h2>Publications</h2>
-                <div class="item">
+                <div class="item-list">
                     <div class="item-title" style="margin-bottom: 0.4rem;">
                         Phantom Force: Injecting Adversarial Tactile Perceptions into Embodied Intelligence via EMI
                     </div>
@@ -397,7 +423,7 @@
             <section class="card full-width reveal" id="experience">
                 <h2>Research & Project Experience</h2>
                 
-                <div class="item">
+                <div class="item-list">
                     <div class="item-header-flex">
                         <div class="item-title">AI Safety Research</div>
                         <div class="item-date-right">09/2025 - Present</div>
@@ -410,7 +436,7 @@
                     </ul>
                 </div>
 
-                <div class="item" style="margin-top: 2rem;">
+                <div class="item-list" style="margin-top: 2rem;">
                     <div class="item-header-flex">
                         <div class="item-title">Compress-Transfer-Decompress for LLM Serving</div>
                         <div class="item-date-right">09/2025 - 04/2026</div>
@@ -423,7 +449,7 @@
                     </ul>
                 </div>
 
-                <div class="item" style="margin-top: 2rem;">
+                <div class="item-list" style="margin-top: 2rem;">
                     <div class="item-header-flex">
                         <div class="item-title">Apple Vision Pro for Disabled Learners</div>
                         <div class="item-date-right">02/2025 - 12/2025</div>
@@ -440,7 +466,7 @@
                 <h2>Internships</h2>
                 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-                    <div class="item">
+                    <div class="item-list">
                         <div class="item-header-flex">
                             <div class="item-title">iFLYTEK Co., Ltd.</div>
                             <div class="item-date-right">07/2025 - 08/2025</div>
@@ -448,7 +474,7 @@
                         <div class="item-subtitle" style="color: var(--text-muted);">Test Developer | Hefei, China</div>
                     </div>
                     
-                    <div class="item">
+                    <div class="item-list">
                         <div class="item-header-flex">
                             <div class="item-title">Sina Com Technology</div>
                             <div class="item-date-right">05/2025 - 07/2025</div>
