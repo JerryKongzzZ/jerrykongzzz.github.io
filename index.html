@@ -6,62 +6,98 @@
     <title>Zirui Kong (Jerry) - Portfolio</title>
     <style>
         :root {
-            --bg-dark: #090a0f;
-            --card-bg: #151821;
-            --text-main: #e2e8f0;
+            --bg-dark: #07080b;          /* 更深邃的背景黑 */
+            --card-bg: rgba(21, 24, 33, 0.6); /* 卡片半透明，配合背景和边框 */
+            --text-main: #f1f5f9;
             --text-muted: #94a3b8;
             --accent-color: #ff6b6b;
-            --border-color: #2e3342;
+            --border-color: rgba(255, 255, 255, 0.08); /* 弱化边框，增强高级感 */
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.6;
             background-color: var(--bg-dark);
             color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            /* 修复导航条遮挡锚点的问题 */
+            scroll-behavior: smooth;
+        }
+
+        .container {
             max-width: 1000px;
             margin: 0 auto;
             padding: 0 1.5rem;
         }
 
-        /* 顶部导航栏 */
+        /* 顶部导航栏 - 增加悬浮毛玻璃效果 */
         nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(7, 8, 11, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        .nav-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.5rem 0;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1.2rem 1.5rem;
         }
         nav .logo {
             font-size: 1.2rem;
-            font-weight: bold;
+            font-weight: 700;
+            letter-spacing: 0.5px;
             color: var(--text-main);
         }
         nav .menu a {
-            color: var(--accent-color);
+            color: var(--text-muted);
             text-decoration: none;
-            margin-left: 1.5rem;
-            font-size: 0.95rem;
+            margin-left: 2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
         }
         nav .menu a:hover {
-            text-decoration: underline;
+            color: var(--text-main);
+        }
+
+        /* 统一的滚动渐显动画类 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            /* 使用阻尼曲线，感觉更丝滑 */
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* 个人信息头部 */
         .profile-header {
             display: flex;
             align-items: center;
-            gap: 2rem;
-            margin-bottom: 3rem;
+            gap: 2.5rem;
+            margin: 4rem auto 3rem;
+            padding-top: 1rem;
         }
         .avatar {
-            width: 120px;
-            height: 120px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
             background-color: var(--border-color); 
             overflow: hidden;
             flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
         }
         .avatar img {
             width: 100%;
@@ -69,46 +105,56 @@
             object-fit: cover;
         }
         .profile-info h1 {
-            font-size: 2.2rem;
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
             margin: 0 0 0.5rem 0;
         }
         .profile-info p {
             color: var(--text-muted);
-            margin: 0 0 1rem 0;
-            font-size: 0.95rem;
+            margin: 0 0 1.2rem 0;
+            font-size: 1rem;
+            line-height: 1.5;
         }
 
         /* 胶囊标签与按钮 */
         .tags-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
+            gap: 0.6rem;
+            margin-bottom: 1.2rem;
         }
         .tag {
             border: 1px solid var(--border-color);
             border-radius: 20px;
-            padding: 0.2rem 0.8rem;
-            font-size: 0.85rem;
-            color: var(--text-main);
-            background-color: transparent;
+            padding: 0.25rem 0.9rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            color: var(--text-muted);
+            background-color: rgba(255,255,255,0.02);
         }
         .btn-container {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.8rem;
         }
         .btn {
             border: 1px solid var(--border-color);
             border-radius: 20px;
-            padding: 0.3rem 1rem;
+            padding: 0.4rem 1.2rem;
             font-size: 0.85rem;
+            font-weight: 500;
             color: var(--text-main);
             text-decoration: none;
-            background-color: #1e2330;
-            transition: background-color 0.2s;
+            background-color: rgba(255,255,255,0.03);
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
         }
         .btn:hover {
-            background-color: var(--border-color);
+            background-color: var(--text-main);
+            color: var(--bg-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,255,255,0.1);
         }
 
         /* 卡片网格布局 */
@@ -116,141 +162,123 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
+            /* 抵消 navbar 高度，防止锚点跳转被遮挡 */
+            scroll-padding-top: 100px; 
         }
+        
         .card {
             background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 1.8rem;
+            border-radius: 16px; /* 更圆润的倒角 */
+            padding: 2rem;
             border: 1px solid var(--border-color);
             box-sizing: border-box;
-            transition: box-shadow 220ms ease, background-color 220ms ease;
-            width: auto;
-            display: block;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                        box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        border-color 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
+        
+        /* 高级感：卡片悬浮时的微交互 */
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        /* 增加极弱的顶端高光，模拟玻璃质感 */
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .card:hover::after { opacity: 1; }
+
         .card.full-width {
             grid-column: 1 / -1;
         }
 
         .card h2 {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
+            font-weight: 600;
             margin-top: 0;
-            margin-bottom: 1.2rem;
-            border-bottom: 1px dashed var(--border-color);
-            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--border-color);
+            letter-spacing: 0.5px;
         }
+
+        /* 调整锚点滚动偏移量 */
+        section { scroll-margin-top: 100px; }
 
         /* Timeline (vertical) */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(8px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes dotPop {
-            from { transform: scale(0.6); opacity: 0; }
-            to   { transform: scale(1); opacity: 1; }
-        }
-
         .card.timeline {
             position: relative;
-            padding-left: 2.8rem; /* 为对齐后的虚线腾出空间 */
+            padding-left: 3rem; 
         }
-        
-        /* 修复 Bug：使用精准的 px 居中对齐虚线与圆点 */
         .card.timeline::before {
             content: "";
             position: absolute;
-            left: 24px; /* 距离左侧固定 24px，加上 2px 边框，中心点在 25px */
-            top: 3rem; 
-            bottom: 1rem;
+            left: 28px; 
+            top: 4.5rem; 
+            bottom: 1.5rem;
             width: 0;
-            border-left: 2px dashed var(--border-color);
+            border-left: 2px dashed rgba(255,255,255,0.1);
         }
-
         .card.timeline .item {
             position: relative;
-            padding: 0.5rem 0;
-            opacity: 0;
-            transform: translateY(6px);
-            animation: fadeUp 420ms cubic-bezier(.2,.9,.2,1) forwards;
         }
-        
-        .card.timeline .item:nth-child(1) { animation-delay: 0.06s; }
-        .card.timeline .item:nth-child(2) { animation-delay: 0.14s; }
-        .card.timeline .item:nth-child(3) { animation-delay: 0.22s; }
-
         .card.timeline .item-header {
             display: grid;
-            grid-template-columns: 90px 1fr;
-            gap: 0.75rem;
+            grid-template-columns: 80px 1fr;
+            gap: 1rem;
             align-items: baseline;
         }
         .card.timeline .item-date {
             justify-self: start;
             color: var(--text-muted);
-            font-size: 1rem;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-        .card.timeline .item-header > span:last-child {
             font-size: 0.95rem;
-            color: var(--text-main);
-            line-height: 1.4;
+            font-weight: 600;
         }
-
-        /* 修复 Bug：精准调整圆点位置中心 */
         .card.timeline .item::before {
             content: "";
             position: absolute;
-            left: 17px; /* 自身宽 10+6=16px。17px 加上一半宽 8px = 中心在 25px。完美与虚线居中 */
-            top: 0.9rem;
-            width: 10px;
-            height: 10px;
+            left: -32px; 
+            top: 0.85rem;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: var(--card-bg);
+            background: var(--bg-dark);
             border: 3px solid var(--accent-color);
-            transform-origin: center;
-            animation: dotPop 320ms cubic-bezier(.2,.9,.2,1) forwards;
-        }
-        
-        .card.timeline .item:nth-child(1)::before { animation-delay: 0.06s; }
-        .card.timeline .item:nth-child(2)::before { animation-delay: 0.14s; }
-        .card.timeline .item:nth-child(3)::before { animation-delay: 0.22s; }
-
-        @media (prefers-reduced-motion: reduce) {
-            .card.timeline .item, .card.timeline .item::before {
-                transition: none !important;
-                animation: none !important;
-                transform: none !important;
-                opacity: 1 !important;
-            }
+            z-index: 2;
         }
 
-        /* 列表项样式 */
-        .item {
-            margin-bottom: 1.5rem;
-        }
-        .item:last-child {
-            margin-bottom: 0;
-        }
-        .item-header {
+        /* 列表项通用样式 */
+        .item { margin-bottom: 1.8rem; }
+        .item:last-child { margin-bottom: 0; }
+        .item-header-flex {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.3rem;
         }
         .item-title {
             font-weight: 600;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
+            color: #fff;
         }
-        .item-date {
+        .item-date-right {
             font-size: 0.85rem;
             color: var(--text-muted);
             white-space: nowrap;
         }
         .item-subtitle {
             font-size: 0.9rem;
-            color: var(--text-muted);
-            font-style: italic;
-            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+            margin-bottom: 0.8rem;
+            font-weight: 500;
         }
         .item ul {
             padding-left: 1.2rem;
@@ -258,208 +286,214 @@
             font-size: 0.95rem;
             color: var(--text-muted);
         }
-        .item li {
-            margin-bottom: 0.4rem;
-        }
+        .item li { margin-bottom: 0.5rem; }
+        
         a.highlight-link {
             color: var(--accent-color);
             text-decoration: none;
+            transition: opacity 0.2s;
         }
-        a.highlight-link:hover {
-            text-decoration: underline;
-        }
+        a.highlight-link:hover { opacity: 0.8; }
 
-        /* 响应式设计，适配手机 */
+        /* 响应式设计 */
         @media (max-width: 768px) {
+            nav .menu { display: none; } /* 移动端可以考虑收起菜单或改为汉堡包 */
             .grid { grid-template-columns: 1fr; }
-            .profile-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
-            .card.timeline { padding-left: 1.8rem; }
-            .card.timeline::before { left: 16px; top: 2.6rem; }
-            .card.timeline .item-header { grid-template-columns: 70px 1fr; gap: 0.5rem; }
-            /* 手机端精简圆点并保证对齐居中 */
-            .card.timeline .item::before { left: 10px; top: 0.8rem; width: 8px; height: 8px; border-width: 3px; } 
+            .profile-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; margin-top: 2rem; }
+            .card.timeline { padding-left: 2rem; }
+            .card.timeline::before { left: 20px; top: 4rem; }
+            .card.timeline .item-header { grid-template-columns: 60px 1fr; gap: 0.5rem; }
+            .card.timeline .item::before { left: -24px; top: 0.8rem; width: 6px; height: 6px; border-width: 2px; } 
+            .item-header-flex { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">Zirui Kong</div>
-        <div class="menu">
-            <a href="#about">About</a>
-            <a href="#publications">Publications</a>
-            <a href="#experience">Experience</a>
-            <a href="#education">Education</a>
+        <div class="nav-inner">
+            <div class="logo">Zirui Kong</div>
+            <div class="menu">
+                <a href="#about">About</a>
+                <a href="#publications">Publications</a>
+                <a href="#experience">Experience</a>
+            </div>
         </div>
     </nav>
 
-    <header class="profile-header" id="about">
-        <div class="avatar">
-            <img src="profile.jpg" alt="Zirui Kong">
-        </div>
-        <div class="profile-info">
-            <h1>Zirui Kong</h1>
-            <p>Incoming MSc Robotics Student at The Chinese University of Hong Kong<br>
-               BSc in Computer Science at The Hong Kong Polytechnic University</p>
+    <div class="container">
+        <header class="profile-header reveal" id="about">
+            <div class="avatar">
+                <img src="profile.jpg" alt="Zirui Kong">
+            </div>
+            <div class="profile-info">
+                <h1>Zirui Kong</h1>
+                <p>Incoming MSc Robotics Student at The Chinese University of Hong Kong<br>
+                   BSc in Computer Science at The Hong Kong Polytechnic University</p>
+                
+                <div class="tags-container">
+                    <span class="tag">AI Safety</span>
+                    <span class="tag">LLM Systems</span>
+                    <span class="tag">Tactile Sensor Security</span>
+                    <span class="tag">Frontend Development</span>
+                </div>
+
+                <div class="btn-container">
+                    <a href="mailto:jerryhongkong.kong@connect.polyu.hk" class="btn">Email</a>
+                    <a href="https://github.com/JerryKongzzZ" class="btn" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    <a href="/cv.pdf" class="btn" target="_blank">CV</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="grid">
             
-            <div class="tags-container">
-                <span class="tag">AI Safety</span>
-                <span class="tag">LLM Systems</span>
-                <span class="tag">Tactile Sensor Security</span>
-                <span class="tag">Frontend Development</span>
-            </div>
+            <section class="card reveal">
+                <h2>About</h2>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1rem;">
+                    I am an undergraduate student at The Hong Kong Polytechnic University, transitioning to an MSc in Robotics at The Chinese University of Hong Kong. 
+                </p>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0;">
+                    My research and engineering interests span <strong style="color: #fff; font-weight: 500;">AI safety, tactile sensor security, and LLM system optimization</strong>. I am passionate about building robust backend architectures and addressing security challenges in embodied intelligence.
+                </p>
+            </section>
 
-            <div class="btn-container">
-                <a href="mailto:jerryhongkong.kong@connect.polyu.hk" class="btn">Email</a>
-                <a href="https://github.com/JerryKongzzZ" class="btn" target="_blank" rel="noopener noreferrer">GitHub</a>
-                <a href="/cv.pdf" class="btn" target="_blank">CV</a>
-            </div>
-        </div>
-    </header>
+            <section class="card timeline reveal">
+                <h2>News & Highlights</h2>
+                <div class="item">
+                    <div class="item-header">
+                        <span class="item-date">2026</span>
+                        <span style="font-size: 0.95rem;">Paper accepted to <strong style="color: var(--text-main);">ASIA CCS 2026</strong>: <em style="color: var(--text-muted);">Phantom Force: Injecting Adversarial Tactile Perceptions...</em></span>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="item-header">
+                        <span class="item-date">2025</span>
+                        <span style="font-size: 0.95rem;">Won <strong style="color: var(--text-main);">Second Prize</strong> in Case-based Competition on Helping Disabled Learners Using Apple Vision Pro.</span>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="item-header">
+                        <span class="item-date">2025</span>
+                        <span style="font-size: 0.95rem;">Awarded the Au Bak Ling Charity Trust Scholarship (30,000 HKD).</span>
+                    </div>
+                </div>
+            </section>
 
-    <main class="grid">
-        
-        <div class="card">
-            <h2>About</h2>
-            <p style="font-size: 0.95rem; color: var(--text-muted);">
-                I am an undergraduate student at The Hong Kong Polytechnic University, transitioning to an MSc in Robotics at The Chinese University of Hong Kong. 
-            </p>
-            <p style="font-size: 0.95rem; color: var(--text-muted);">
-                My research and engineering interests span <strong>AI safety, tactile sensor security, and LLM system optimization</strong>. I am passionate about building robust backend architectures and addressing security challenges in embodied intelligence.
-            </p>
-        </div>
+            <section class="card full-width reveal" id="publications">
+                <h2>Publications</h2>
+                <div class="item">
+                    <div class="item-title" style="margin-bottom: 0.4rem;">
+                        Phantom Force: Injecting Adversarial Tactile Perceptions into Embodied Intelligence via EMI
+                    </div>
+                    <div style="font-size: 0.95rem; color: var(--text-muted);">
+                        <strong style="color: #fff;">Zirui Kong</strong>, Youqian Zhang, Sze Yiu Chau.
+                    </div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.4rem;">
+                        <em>In Proceedings of the 21st ACM Asia Conference on Computer and Communications Security (ASIA CCS '26).</em>
+                        <a href="https://doi.org/10.1145/3779208.3804894" target="_blank" class="highlight-link" style="margin-left: 0.5rem;">[DOI Link]</a>
+                    </div>
+                </div>
+            </section>
 
-        <div class="card timeline">
-            <h2>News & Highlights</h2>
-            <div class="item">
-                <div class="item-header">
-                    <span class="item-date">2026</span>
-                    <span style="font-size: 0.9rem; color: var(--text-main);">Paper accepted to <strong style="color: var(--accent-color);">ASIA CCS 2026</strong>: <em>Phantom Force: Injecting Adversarial Tactile Perceptions into Embodied Intelligence via EMI</em>.</span>
+            <section class="card full-width reveal" id="experience">
+                <h2>Research & Project Experience</h2>
+                
+                <div class="item">
+                    <div class="item-header-flex">
+                        <div class="item-title">AI Safety Research</div>
+                        <div class="item-date-right">09/2025 - Present</div>
+                    </div>
+                    <div class="item-subtitle">Research Assistant | Supervisor: Dr. ZHANG Youqian</div>
+                    <ul>
+                        <li>Conducted research on tactile sensor security in embodied robots, focusing on EMI-based adversarial attacks on Hall-effect fingertip sensors.</li>
+                        <li>Evaluated how targeted signal injection can distort force perception and disrupt learning-based tactile classification.</li>
+                        <li>Identified robotic safety risks caused by compromised tactile sensing during manipulation tasks.</li>
+                    </ul>
                 </div>
-            </div>
-            <div class="item">
-                <div class="item-header">
-                    <span class="item-date">2025</span>
-                    <span style="font-size: 0.9rem; color: var(--text-main);">Won <strong style="color: var(--accent-color);">Second Prize</strong> in Case-based Competition on Helping Disabled Learners Using Apple Vision Pro.</span>
-                </div>
-            </div>
-            <div class="item">
-                <div class="item-header">
-                    <span class="item-date">2025</span>
-                    <span style="font-size: 0.9rem; color: var(--text-main);">Awarded the Au Bak Ling Charity Trust Scholarship (30,000 HKD).</span>
-                </div>
-            </div>
-        </div>
 
-        <div class="card full-width" id="publications">
-            <h2>Publications</h2>
-            <div class="item">
-                <div class="item-title" style="color: var(--text-main);">
-                    Phantom Force: Injecting Adversarial Tactile Perceptions into Embodied Intelligence via EMI
+                <div class="item" style="margin-top: 2rem;">
+                    <div class="item-header-flex">
+                        <div class="item-title">Compress-Transfer-Decompress for LLM Serving</div>
+                        <div class="item-date-right">09/2025 - 04/2026</div>
+                    </div>
+                    <div class="item-subtitle">LLM Systems Engineer | Supervisor: Dr. ZHANG Zhaorui</div>
+                    <ul>
+                        <li>Engineered a "Compress-Transfer-Decompress" pipeline in vLLM via Monkey-Patching to overcome PCIe bottlenecks during KV cache swapping.</li>
+                        <li>Developed a high-performance C++ PyBind11 wrapper for cuSZp, implementing dynamic error-bound scaling for GPU-accelerated tensor compression.</li>
+                        <li>Achieved a 3.06× compression ratio and 2.08× Swap-In speedup across eight LLMs, safely preserving generation quality.</li>
+                    </ul>
                 </div>
-                <div style="font-size: 0.95rem; color: var(--text-muted); margin-top: 0.3rem;">
-                    <strong>Zirui Kong</strong>, Youqian Zhang, Sze Yiu Chau.
-                </div>
-                <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.3rem;">
-                    <em>In Proceedings of the 21st ACM Asia Conference on Computer and Communications Security (ASIA CCS '26).</em>
-                    <a href="https://doi.org/10.1145/3779208.3804894" target="_blank" class="highlight-link" style="margin-left: 0.5rem;">[DOI Link]</a>
-                </div>
-            </div>
-        </div>
 
-        <div class="card full-width" id="experience">
-            <h2>Research & Project Experience</h2>
-            
-            <div class="item">
-                <div class="item-header">
-                    <div class="item-title">AI Safety Research</div>
-                    <div class="item-date">09/2025 - Present</div>
+                <div class="item" style="margin-top: 2rem;">
+                    <div class="item-header-flex">
+                        <div class="item-title">Apple Vision Pro for Disabled Learners</div>
+                        <div class="item-date-right">02/2025 - 12/2025</div>
+                    </div>
+                    <div class="item-subtitle">Full Stack Developer</div>
+                    <ul>
+                        <li>Designed and implemented the front-end and visualization dashboard of an end-to-end solution, enabling real-time monitoring.</li>
+                        <li>Developed multi-modal input–output pipelines, state management, and performance optimization.</li>
+                    </ul>
                 </div>
-                <div class="item-subtitle">Research Assistant | Supervisor: Dr. ZHANG Youqian</div>
-                <ul>
-                    <li>Conducted research on tactile sensor security in embodied robots, focusing on EMI-based adversarial attacks on Hall-effect fingertip sensors.</li>
-                    <li>Evaluated how targeted signal injection can distort force perception and disrupt learning-based tactile classification.</li>
-                    <li>Identified robotic safety risks caused by compromised tactile sensing during manipulation tasks.</li>
-                </ul>
-            </div>
+            </section>
 
-            <div class="item">
-                <div class="item-header">
-                    <div class="item-title">Compress-Transfer-Decompress for LLM Serving</div>
-                    <div class="item-date">09/2025 - 04/2026</div>
+            <section class="card full-width reveal">
+                <h2>Internships & Leadership</h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    <div class="item">
+                        <div class="item-header-flex">
+                            <div class="item-title">iFLYTEK Co., Ltd.</div>
+                            <div class="item-date-right">07/2025 - 08/2025</div>
+                        </div>
+                        <div class="item-subtitle" style="color: var(--text-muted);">Test Developer | Hefei, China</div>
+                        <p style="font-size: 0.95rem; color: var(--text-muted); margin:0;">
+                            Implemented automated testing scripts in Python; introduced environment containerization.
+                        </p>
+                    </div>
+                    
+                    <div class="item">
+                        <div class="item-header-flex">
+                            <div class="item-title">Sina Com Technology</div>
+                            <div class="item-date-right">05/2025 - 07/2025</div>
+                        </div>
+                        <div class="item-subtitle" style="color: var(--text-muted);">Intern | Beijing, China</div>
+                        <p style="font-size: 0.95rem; color: var(--text-muted); margin:0;">
+                            Designed Agent workflows and integrated tool calls; developed API wrappers.
+                        </p>
+                    </div>
                 </div>
-                <div class="item-subtitle">LLM Systems Engineer | Supervisor: Dr. ZHANG Zhaorui</div>
-                <ul>
-                    <li>Engineered a "Compress-Transfer-Decompress" pipeline in vLLM via Monkey-Patching to overcome PCIe bottlenecks during KV cache swapping.</li>
-                    <li>Developed a high-performance C++ PyBind11 wrapper for cuSZp, implementing dynamic error-bound scaling for GPU-accelerated tensor compression.</li>
-                    <li>Achieved a 3.06× compression ratio and 2.08× Swap-In speedup across eight LLMs, safely preserving generation quality.</li>
-                </ul>
-            </div>
+            </section>
 
-            <div class="item">
-                <div class="item-header">
-                    <div class="item-title">Apple Vision Pro for Disabled Learners</div>
-                    <div class="item-date">02/2025 - 12/2025</div>
-                </div>
-                <div class="item-subtitle">Full Stack Developer</div>
-                <ul>
-                    <li>Designed and implemented the front-end and visualization dashboard of an end-to-end solution, enabling real-time monitoring.</li>
-                    <li>Developed multi-modal input–output pipelines, state management, and performance optimization.</li>
-                </ul>
-            </div>
-        </div>
+        </main>
 
-        <div class="card" id="education">
-            <h2>Education</h2>
-            <div class="item">
-                <div class="item-header">
-                    <div class="item-title">The Chinese University of Hong Kong</div>
-                    <div class="item-date">2026 - 2027</div>
-                </div>
-                <div class="item-subtitle">MSc (Hons) Robotics</div>
-            </div>
-            <div class="item">
-                <div class="item-header">
-                    <div class="item-title">The Hong Kong Polytechnic University</div>
-                    <div class="item-date">2022 - 2026</div>
-                </div>
-                <div class="item-subtitle">BSc (Hons) Computer Science</div>
-                <ul>
-                    <li><strong>Minor:</strong> Applied Mathematics</li>
-                    <li><strong>Certifications:</strong> HUAWEI Ascend AI, NVIDIA Fundamentals of Deep Learning</li>
-                </ul>
-            </div>
-        </div>
+        <footer class="reveal" style="margin-top: 4rem; text-align: center; font-size: 0.85rem; color: var(--text-muted); padding-bottom: 3rem;">
+            <p>&copy; 2026 June; Zirui Kong; Built with Precision.</p>
+        </footer>
+    </div>
 
-        <div class="card">
-            <h2>Internships & Leadership</h2>
-            <div class="item">
-                <div class="item-header">
-                    <div class="item-title">iFLYTEK Co., Ltd.</div>
-                    <div class="item-date">07/2025 - 08/2025</div>
-                </div>
-                <div class="item-subtitle">Test Developer | Hefei, China</div>
-                <ul>
-                    <li>Implemented automated testing scripts in Python; introduced environment containerization.</li>
-                </ul>
-            </div>
-            <div class="item">
-                <div class="item-header">
-                    <div class="item-title">Sina Com Technology</div>
-                    <div class="item-date">05/2025 - 07/2025</div>
-                </div>
-                <div class="item-subtitle">Intern | Beijing, China</div>
-                <ul>
-                    <li>Designed Agent workflows and integrated tool calls; developed API wrappers.</li>
-                </ul>
-            </div>
-        </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -50px 0px', // 提前50px触发，手感更好
+                threshold: 0.1
+            };
 
-    </main>
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // 如果只需要触发一次动画，可以解除观察
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
 
-    <footer style="margin-top: 3rem; text-align: center; font-size: 0.85rem; color: var(--text-muted); padding-bottom: 2rem;">
-        <p>&copy; 2026 June; Zirui Kong; Built with Gemini</p>
-    </footer>
-
+            const revealElements = document.querySelectorAll('.reveal');
+            revealElements.forEach(el => observer.observe(el));
+        });
+    </script>
 </body>
 </html>
