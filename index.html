@@ -6,12 +6,12 @@
     <title>Zirui Kong (Jerry) - Portfolio</title>
     <style>
         :root {
-            --bg-dark: #07080b;          /* 更深邃的背景黑 */
-            --card-bg: rgba(21, 24, 33, 0.6); /* 卡片半透明，配合背景和边框 */
+            --bg-dark: #07080b;
+            --card-bg: rgba(21, 24, 33, 0.6);
             --text-main: #f1f5f9;
             --text-muted: #94a3b8;
             --accent-color: #ff6b6b;
-            --border-color: rgba(255, 255, 255, 0.08); /* 弱化边框，增强高级感 */
+            --border-color: rgba(255, 255, 255, 0.08);
         }
 
         body {
@@ -21,7 +21,6 @@
             color: var(--text-main);
             margin: 0;
             padding: 0;
-            /* 修复导航条遮挡锚点的问题 */
             scroll-behavior: smooth;
         }
 
@@ -31,7 +30,7 @@
             padding: 0 1.5rem;
         }
 
-        /* 顶部导航栏 - 增加悬浮毛玻璃效果 */
+        /* 顶部导航栏 */
         nav {
             position: sticky;
             top: 0;
@@ -68,18 +67,23 @@
             color: var(--text-main);
         }
 
-        /* 统一的滚动渐显动画类 */
+        /* -------------------------------------------
+           ✨ 重新设计的慢速渐显动画 
+           ------------------------------------------- */
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            /* 使用阻尼曲线，感觉更丝滑 */
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            /* 缩短位移距离，削弱运动感，突出渐现感 */
+            transform: translateY(20px);
+            /* 将动画时间拉长到 1.2s，使用舒缓的过渡函数 */
+            transition: opacity 1.2s ease-in-out,
+                        transform 1.2s ease-out;
+            will-change: opacity, transform;
         }
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
+        /* ------------------------------------------- */
 
         /* 个人信息头部 */
         .profile-header {
@@ -162,30 +166,27 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
-            /* 抵消 navbar 高度，防止锚点跳转被遮挡 */
             scroll-padding-top: 100px; 
         }
         
         .card {
             background-color: var(--card-bg);
-            border-radius: 16px; /* 更圆润的倒角 */
+            border-radius: 16px;
             padding: 2rem;
             border: 1px solid var(--border-color);
             box-sizing: border-box;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-                        box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            transition: transform 0.4s ease, 
+                        box-shadow 0.4s ease,
                         border-color 0.4s ease;
             position: relative;
             overflow: hidden;
         }
         
-        /* 高级感：卡片悬浮时的微交互 */
         .card:hover {
             transform: translateY(-4px);
             box-shadow: 0 12px 30px rgba(0,0,0,0.5);
             border-color: rgba(255, 255, 255, 0.15);
         }
-        /* 增加极弱的顶端高光，模拟玻璃质感 */
         .card::after {
             content: '';
             position: absolute;
@@ -210,7 +211,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* 调整锚点滚动偏移量 */
         section { scroll-margin-top: 100px; }
 
         /* Timeline (vertical) */
@@ -297,7 +297,7 @@
 
         /* 响应式设计 */
         @media (max-width: 768px) {
-            nav .menu { display: none; } /* 移动端可以考虑收起菜单或改为汉堡包 */
+            nav .menu { display: none; }
             .grid { grid-template-columns: 1fr; }
             .profile-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; margin-top: 2rem; }
             .card.timeline { padding-left: 2rem; }
@@ -439,7 +439,7 @@
             </section>
 
             <section class="card full-width reveal">
-                <h2>Internships & Leadership</h2>
+                <h2>Internships</h2>
                 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
                     <div class="item">
@@ -458,10 +458,7 @@
                             <div class="item-title">Sina Com Technology</div>
                             <div class="item-date-right">05/2025 - 07/2025</div>
                         </div>
-                        <div class="item-subtitle" style="color: var(--text-muted);">Intern | Beijing, China</div>
-                        <p style="font-size: 0.95rem; color: var(--text-muted); margin:0;">
-                            Designed Agent workflows and integrated tool calls; developed API wrappers.
-                        </p>
+                        <div class="item-subtitle" style="color: var(--text-muted);">Agent Developer | Beijing, China</div>
                     </div>
                 </div>
             </section>
@@ -469,7 +466,7 @@
         </main>
 
         <footer class="reveal" style="margin-top: 4rem; text-align: center; font-size: 0.85rem; color: var(--text-muted); padding-bottom: 3rem;">
-            <p>&copy; 2026 June; Zirui Kong; Built with Precision.</p>
+            <p>&copy; 2026 June; Zirui Kong; Built with Gemini 3.1 Pro.</p>
         </footer>
     </div>
 
@@ -477,15 +474,16 @@
         document.addEventListener('DOMContentLoaded', () => {
             const observerOptions = {
                 root: null,
-                rootMargin: '0px 0px -50px 0px', // 提前50px触发，手感更好
-                threshold: 0.1
+                // 修改为 -10px，让卡片进入视口稍微多一点点才开始渐隐，配合 1.2s 的动画更舒缓
+                rootMargin: '0px 0px -10px 0px', 
+                // 提高阈值，当卡片 15% 露出来的时候才触发，避免一漏头就弹出来
+                threshold: 0.15 
             };
 
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
-                        // 如果只需要触发一次动画，可以解除观察
                         observer.unobserve(entry.target);
                     }
                 });
