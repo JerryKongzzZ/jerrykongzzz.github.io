@@ -59,7 +59,7 @@
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            background-color: var(--border-color); /* 如果有照片，可以在img标签中替换 */
+            background-color: var(--border-color); 
             overflow: hidden;
             flex-shrink: 0;
         }
@@ -122,6 +122,10 @@
             border-radius: 12px;
             padding: 1.8rem;
             border: 1px solid var(--border-color);
+            box-sizing: border-box;
+            transition: box-shadow 220ms ease, background-color 220ms ease;
+            width: auto;
+            display: block;
         }
         .card.full-width {
             grid-column: 1 / -1;
@@ -135,14 +139,7 @@
             padding-bottom: 0.5rem;
         }
 
-        /* Timeline (vertical) — fade-in on load, no hover transforms */
-        .card {
-            box-sizing: border-box;
-            transition: box-shadow 220ms ease, background-color 220ms ease;
-            width: auto;
-            display: block;
-        }
-
+        /* Timeline (vertical) */
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(8px); }
             to   { opacity: 1; transform: translateY(0); }
@@ -154,14 +151,15 @@
 
         .card.timeline {
             position: relative;
-            padding-left: 2.6rem;
+            padding-left: 2.8rem; /* 为对齐后的虚线腾出空间 */
         }
-        /* continuous dashed vertical line */
+        
+        /* 修复 Bug：使用精准的 px 居中对齐虚线与圆点 */
         .card.timeline::before {
             content: "";
             position: absolute;
-            left: 1.05rem;
-            top: 3rem; /* start after the card heading */
+            left: 24px; /* 距离左侧固定 24px，加上 2px 边框，中心点在 25px */
+            top: 3rem; 
             bottom: 1rem;
             width: 0;
             border-left: 2px dashed var(--border-color);
@@ -174,12 +172,10 @@
             transform: translateY(6px);
             animation: fadeUp 420ms cubic-bezier(.2,.9,.2,1) forwards;
         }
-        /* staggered delays for natural feel */
+        
         .card.timeline .item:nth-child(1) { animation-delay: 0.06s; }
         .card.timeline .item:nth-child(2) { animation-delay: 0.14s; }
         .card.timeline .item:nth-child(3) { animation-delay: 0.22s; }
-        .card.timeline .item:nth-child(4) { animation-delay: 0.30s; }
-        .card.timeline .item:nth-child(5) { animation-delay: 0.38s; }
 
         .card.timeline .item-header {
             display: grid;
@@ -200,29 +196,25 @@
             line-height: 1.4;
         }
 
-        /* circular marker aligned to the dashed line */
+        /* 修复 Bug：精准调整圆点位置中心 */
         .card.timeline .item::before {
             content: "";
             position: absolute;
-            left: 0.98rem; /* aligns with card::before */
+            left: 17px; /* 自身宽 10+6=16px。17px 加上一半宽 8px = 中心在 25px。完美与虚线居中 */
             top: 0.9rem;
-            width: 0.62rem;
-            height: 0.62rem;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: var(--card-bg);
             border: 3px solid var(--accent-color);
             transform-origin: center;
             animation: dotPop 320ms cubic-bezier(.2,.9,.2,1) forwards;
         }
+        
         .card.timeline .item:nth-child(1)::before { animation-delay: 0.06s; }
         .card.timeline .item:nth-child(2)::before { animation-delay: 0.14s; }
         .card.timeline .item:nth-child(3)::before { animation-delay: 0.22s; }
-        .card.timeline .item:nth-child(4)::before { animation-delay: 0.30s; }
-        .card.timeline .item:nth-child(5)::before { animation-delay: 0.38s; }
 
-        /* remove hover scaling on marker */
-
-        /* reduce motion preference */
         @media (prefers-reduced-motion: reduce) {
             .card.timeline .item, .card.timeline .item::before {
                 transition: none !important;
@@ -232,13 +224,6 @@
             }
         }
 
-        /* responsive tweaks */
-        @media (max-width: 768px) {
-            .card.timeline { padding-left: 1.4rem; }
-            .card.timeline::before { left: 0.7rem; top: 2.6rem; }
-            .card.timeline .item-header { grid-template-columns: 70px 1fr; gap: 0.5rem; }
-            .card.timeline .item::before { left: 0.6rem; top: 0.8rem; width: 0.5rem; height: 0.5rem; border-width: 2px; }
-        }
         /* 列表项样式 */
         .item {
             margin-bottom: 1.5rem;
@@ -288,6 +273,11 @@
         @media (max-width: 768px) {
             .grid { grid-template-columns: 1fr; }
             .profile-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .card.timeline { padding-left: 1.8rem; }
+            .card.timeline::before { left: 16px; top: 2.6rem; }
+            .card.timeline .item-header { grid-template-columns: 70px 1fr; gap: 0.5rem; }
+            /* 手机端精简圆点并保证对齐居中 */
+            .card.timeline .item::before { left: 10px; top: 0.8rem; width: 8px; height: 8px; border-width: 3px; } 
         }
     </style>
 </head>
@@ -321,15 +311,14 @@
 
             <div class="btn-container">
                 <a href="mailto:jerryhongkong.kong@connect.polyu.hk" class="btn">Email</a>
-                <a href="github.com/JerryKongzzZ" class="btn">GitHub</a>
-                <a href="/cv.pdf" class="btn">CV</a>
+                <a href="https://github.com/JerryKongzzZ" class="btn" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="/cv.pdf" class="btn" target="_blank">CV</a>
             </div>
         </div>
     </header>
 
     <main class="grid">
         
-        <!-- About 区域 -->
         <div class="card">
             <h2>About</h2>
             <p style="font-size: 0.95rem; color: var(--text-muted);">
@@ -340,7 +329,6 @@
             </p>
         </div>
 
-        <!-- 最新消息/亮点 区域 -->
         <div class="card timeline">
             <h2>News & Highlights</h2>
             <div class="item">
@@ -351,19 +339,18 @@
             </div>
             <div class="item">
                 <div class="item-header">
-                    <span class="item-date">04/2025</span>
+                    <span class="item-date">2025</span>
                     <span style="font-size: 0.9rem; color: var(--text-main);">Won <strong style="color: var(--accent-color);">Second Prize</strong> in Case-based Competition on Helping Disabled Learners Using Apple Vision Pro.</span>
                 </div>
             </div>
             <div class="item">
                 <div class="item-header">
-                    <span class="item-date">2024</span>
+                    <span class="item-date">2025</span>
                     <span style="font-size: 0.9rem; color: var(--text-main);">Awarded the Au Bak Ling Charity Trust Scholarship (30,000 HKD).</span>
                 </div>
             </div>
         </div>
 
-        <!-- 论文发表 区域 (满宽) -->
         <div class="card full-width" id="publications">
             <h2>Publications</h2>
             <div class="item">
@@ -380,7 +367,6 @@
             </div>
         </div>
 
-        <!-- 科研与项目经验 (满宽) -->
         <div class="card full-width" id="experience">
             <h2>Research & Project Experience</h2>
             
@@ -402,7 +388,7 @@
                     <div class="item-title">Compress-Transfer-Decompress for LLM Serving</div>
                     <div class="item-date">09/2025 - 04/2026</div>
                 </div>
-                <div class="item-subtitle">LLM Systems Engineer / C++ Backend Developer</div>
+                <div class="item-subtitle">LLM Systems Engineer | Supervisor: Dr. ZHANG Zhaorui</div>
                 <ul>
                     <li>Engineered a "Compress-Transfer-Decompress" pipeline in vLLM via Monkey-Patching to overcome PCIe bottlenecks during KV cache swapping.</li>
                     <li>Developed a high-performance C++ PyBind11 wrapper for cuSZp, implementing dynamic error-bound scaling for GPU-accelerated tensor compression.</li>
@@ -423,7 +409,6 @@
             </div>
         </div>
 
-        <!-- 教育背景 -->
         <div class="card" id="education">
             <h2>Education</h2>
             <div class="item">
@@ -446,7 +431,6 @@
             </div>
         </div>
 
-        <!-- 实习与经历 -->
         <div class="card">
             <h2>Internships & Leadership</h2>
             <div class="item">
@@ -469,19 +453,12 @@
                     <li>Designed Agent workflows and integrated tool calls; developed API wrappers.</li>
                 </ul>
             </div>
-            <div class="item">
-                <div class="item-header">
-                    <div class="item-title">Global Leadership Project (Rwanda)</div>
-                    <div class="item-date">07/2024 - 08/2024</div>
-                </div>
-                <div class="item-subtitle">Participant & Designer</div>
-            </div>
         </div>
 
     </main>
 
-    <footer style="margin-top: 3rem; text-align: center; font-size: 0.85rem; color: var(--border-color); padding-bottom: 2rem;">
-        <p>&copy; 2026 Zirui Kong.</p>
+    <footer style="margin-top: 3rem; text-align: center; font-size: 0.85rem; color: var(--text-muted); padding-bottom: 2rem;">
+        <p>&copy; 2026 June; Zirui Kong; Built with Gemini</p>
     </footer>
 
 </body>
