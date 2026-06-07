@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zirui Kong (Jerry) - Portfolio</title>
+    <title>Zirui (Jerry) Kong - Portfolio</title>
     <style>
         :root {
             --bg-dark: #07080b;
@@ -68,15 +68,13 @@
         }
 
         /* -------------------------------------------
-           ✨ 重新设计的慢速渐显动画 
+           ✨ 统一使用 ease 的渐显动画 
            ------------------------------------------- */
         .reveal {
             opacity: 0;
-            /* 缩短位移距离，削弱运动感，突出渐现感 */
             transform: translateY(20px);
-            /* 将动画时间拉长到 1.2s，使用舒缓的过渡函数 */
-            transition: opacity 1.2s ease-in-out,
-                        transform 1.2s ease-out;
+            /* 透明度和位移统一使用 1s ease，干净利落 */
+            transition: opacity 1s ease, transform 1s ease;
             will-change: opacity, transform;
         }
         .reveal.active {
@@ -448,9 +446,6 @@
                             <div class="item-date-right">07/2025 - 08/2025</div>
                         </div>
                         <div class="item-subtitle" style="color: var(--text-muted);">Test Developer | Hefei, China</div>
-                        <p style="font-size: 0.95rem; color: var(--text-muted); margin:0;">
-                            Implemented automated testing scripts in Python; introduced environment containerization.
-                        </p>
                     </div>
                     
                     <div class="item">
@@ -474,9 +469,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const observerOptions = {
                 root: null,
-                // 修改为 -10px，让卡片进入视口稍微多一点点才开始渐隐，配合 1.2s 的动画更舒缓
                 rootMargin: '0px 0px -10px 0px', 
-                // 提高阈值，当卡片 15% 露出来的时候才触发，避免一漏头就弹出来
                 threshold: 0.15 
             };
 
