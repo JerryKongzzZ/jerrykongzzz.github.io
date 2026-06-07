@@ -10,7 +10,7 @@
             --card-bg: #151821;
             --text-main: #e2e8f0;
             --text-muted: #94a3b8;
-            --accent-color: #ff6b6b; /* 截图中导航栏的橙红色点缀 */
+            --accent-color: #ff6b6b;
             --border-color: #2e3342;
         }
 
@@ -135,6 +135,127 @@
             padding-bottom: 0.5rem;
         }
 
+        /* Timeline (vertical) — with subtle animations */
+        .card {
+            box-sizing: border-box;
+            transition: transform 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 30px rgba(2,6,23,0.55);
+        }
+        .card:focus-within {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(2,6,23,0.45);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes dotPop {
+            from { transform: scale(0.6); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+
+        .card.timeline {
+            position: relative;
+            padding-left: 2.6rem;
+        }
+        .card.timeline::before {
+            content: "";
+            position: absolute;
+            left: 1.05rem;
+            top: 3rem; /* start after the card heading */
+            bottom: 1rem;
+            width: 2px;
+            background: var(--border-color);
+        }
+        .card.timeline .item {
+            position: relative;
+            padding: 0.5rem 0;
+            opacity: 0;
+            transform: translateY(6px);
+            animation: fadeUp 360ms ease forwards;
+        }
+        /* staggered delays for natural feel (up to 8 items) */
+        .card.timeline .item:nth-child(1) { animation-delay: 0.06s; }
+        .card.timeline .item:nth-child(2) { animation-delay: 0.14s; }
+        .card.timeline .item:nth-child(3) { animation-delay: 0.22s; }
+        .card.timeline .item:nth-child(4) { animation-delay: 0.30s; }
+        .card.timeline .item:nth-child(5) { animation-delay: 0.38s; }
+        .card.timeline .item:nth-child(6) { animation-delay: 0.46s; }
+        .card.timeline .item:nth-child(7) { animation-delay: 0.54s; }
+        .card.timeline .item:nth-child(8) { animation-delay: 0.62s; }
+
+        .card.timeline .item-header {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 0.75rem;
+            align-items: start;
+        }
+        .card.timeline .item-date {
+            justify-self: start;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+        .card.timeline .item-header > span:last-child {
+            font-size: 0.9rem;
+            color: var(--text-main);
+            line-height: 1.35;
+        }
+
+        .card.timeline .item::before {
+            content: "";
+            position: absolute;
+            left: 0.9rem;
+            top: 0.9rem;
+            width: 0.6rem;
+            height: 0.6rem;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 3px solid var(--accent-color);
+            transform-origin: center;
+            animation: dotPop 300ms ease forwards;
+        }
+        .card.timeline .item:nth-child(1)::before { animation-delay: 0.06s; }
+        .card.timeline .item:nth-child(2)::before { animation-delay: 0.14s; }
+        .card.timeline .item:nth-child(3)::before { animation-delay: 0.22s; }
+        .card.timeline .item:nth-child(4)::before { animation-delay: 0.30s; }
+        .card.timeline .item:nth-child(5)::before { animation-delay: 0.38s; }
+        .card.timeline .item:nth-child(6)::before { animation-delay: 0.46s; }
+        .card.timeline .item:nth-child(7)::before { animation-delay: 0.54s; }
+        .card.timeline .item:nth-child(8)::before { animation-delay: 0.62s; }
+
+        .card.timeline .item:hover::before {
+            transform: scale(1.12);
+            box-shadow: 0 6px 16px rgba(255,107,107,0.12);
+        }
+
+        /* ensure items wrap and cards grow/shrink with content */
+        .card {
+            width: auto;
+            display: block;
+        }
+
+        /* reduce motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            .card, .card.timeline .item, .card.timeline .item::before {
+                transition: none !important;
+                animation: none !important;
+                transform: none !important;
+                opacity: 1 !important;
+            }
+        }
+
+        /* responsive tweaks */
+        @media (max-width: 768px) {
+            .card.timeline { padding-left: 1.2rem; }
+            .card.timeline::before { left: 0.6rem; top: 2.6rem; }
+            .card.timeline .item-header { grid-template-columns: 70px 1fr; gap: 0.5rem; }
+            .card.timeline .item::before { left: 0.45rem; top: 0.8rem; width: 0.5rem; height: 0.5rem; border-width: 2px; }
+        }
         /* 列表项样式 */
         .item {
             margin-bottom: 1.5rem;
@@ -237,7 +358,7 @@
         </div>
 
         <!-- 最新消息/亮点 区域 -->
-        <div class="card">
+        <div class="card timeline">
             <h2>News & Highlights</h2>
             <div class="item">
                 <div class="item-header">
