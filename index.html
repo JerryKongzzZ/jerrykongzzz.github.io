@@ -5,189 +5,379 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zirui Kong (Jerry) - Portfolio</title>
     <style>
+        :root {
+            --bg-dark: #090a0f;
+            --card-bg: #151821;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent-color: #ff6b6b; /* 截图中导航栏的橙红色点缀 */
+            --border-color: #2e3342;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.6;
-            background-color: #0d1117; /* 深色背景 */
-            color: #c9d1d9; /* 浅灰色正文内容 */
-            max-width: 800px;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 2rem 1rem;
+            padding: 0 1.5rem;
         }
-        h1 { font-size: 2.5rem; margin-bottom: 0.2rem; color: #f0f6fc; } /* 亮白色大标题 */
-        h2 { 
-            font-size: 1.5rem; 
-            margin-top: 2rem; 
-            border-bottom: 1px solid #30363d; /* 深灰色分割线 */
-            padding-bottom: 0.5rem; 
-            color: #f0f6fc; 
+
+        /* 顶部导航栏 */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 3rem;
         }
-        h3 { font-size: 1.2rem; margin-bottom: 0.2rem; color: #e6edf3; }
-        p { margin-top: 0.5rem; margin-bottom: 0.5rem; }
-        a { color: #58a6ff; text-decoration: none; } /* 科技蓝链接 */
-        a:hover { color: #79c0ff; text-decoration: underline; }
-        .contact-info { font-size: 0.95rem; color: #8b949e; margin-bottom: 2rem; }
-        .item-header { display: flex; justify-content: space-between; align-items: baseline; }
-        .date { font-size: 0.9rem; color: #8b949e; white-space: nowrap; margin-left: 1rem; }
-        .subtitle { font-style: italic; color: #8b949e; font-size: 0.95rem; }
-        ul { padding-left: 1.2rem; margin-top: 0.5rem; }
-        li { margin-bottom: 0.3rem; }
-        .publication-title { font-weight: bold; color: #f0f6fc; }
+        nav .logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--text-main);
+        }
+        nav .menu a {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-size: 0.95rem;
+        }
+        nav .menu a:hover {
+            text-decoration: underline;
+        }
+
+        /* 个人信息头部 */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--border-color); /* 如果有照片，可以在img标签中替换 */
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-info h1 {
+            font-size: 2.2rem;
+            margin: 0 0 0.5rem 0;
+        }
+        .profile-info p {
+            color: var(--text-muted);
+            margin: 0 0 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        /* 胶囊标签与按钮 */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .tag {
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            background-color: transparent;
+        }
+        .btn-container {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .btn {
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 0.3rem 1rem;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            text-decoration: none;
+            background-color: #1e2330;
+            transition: background-color 0.2s;
+        }
+        .btn:hover {
+            background-color: var(--border-color);
+        }
+
+        /* 卡片网格布局 */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.8rem;
+            border: 1px solid var(--border-color);
+        }
+        .card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .card h2 {
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        /* 列表项样式 */
+        .item {
+            margin-bottom: 1.5rem;
+        }
+        .item:last-child {
+            margin-bottom: 0;
+        }
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.2rem;
+        }
+        .item-title {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        .item-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .item-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+        .item ul {
+            padding-left: 1.2rem;
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+        .item li {
+            margin-bottom: 0.4rem;
+        }
+        a.highlight-link {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        a.highlight-link:hover {
+            text-decoration: underline;
+        }
+
+        /* 响应式设计，适配手机 */
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            .profile-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Zirui Kong</h1>
-        <div class="contact-info">
-            Email: <a href="mailto:jerryhongkong.kong@connect.polyu.hk">jerryhongkong.kong@connect.polyu.hk</a> | Tel: (852) 5317630<br>
-            To Shek Village 13C, To Shek Street, Shatin, New Territories, Hong Kong
+    <nav>
+        <div class="logo">Zirui Kong</div>
+        <div class="menu">
+            <a href="#about">About</a>
+            <a href="#publications">Publications</a>
+            <a href="#experience">Experience</a>
+            <a href="#education">Education</a>
+        </div>
+    </nav>
+
+    <header class="profile-header" id="about">
+        <div class="avatar">
+            <img src="profile.jpg" alt="Zirui Kong">
+        </div>
+        <div class="profile-info">
+            <h1>Zirui Kong</h1>
+            <p>Incoming MSc Robotics Student at The Chinese University of Hong Kong<br>
+               BSc in Computer Science at The Hong Kong Polytechnic University</p>
+            
+            <div class="tags-container">
+                <span class="tag">AI Safety</span>
+                <span class="tag">LLM Systems</span>
+                <span class="tag">Tactile Sensor Security</span>
+                <span class="tag">Frontend Development</span>
+            </div>
+
+            <div class="btn-container">
+                <a href="mailto:jerryhongkong.kong@connect.polyu.hk" class="btn">Email</a>
+                <a href="github.com/JerryKongzzZ" class="btn">GitHub</a>
+                <a href="/cv.pdf" class="btn">CV</a>
+            </div>
         </div>
     </header>
 
-    <section id="education">
-        <h2>Education</h2>
+    <main class="grid">
         
-        <div>
-            <div class="item-header">
-                <h3>The Chinese University of Hong Kong</h3>
-                <span class="date">Sept. 2026 - Jun. 2027</span>
-            </div>
-            <div class="subtitle">MSc (Hons) Robotics</div>
+        <!-- About 区域 -->
+        <div class="card">
+            <h2>About</h2>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">
+                I am an undergraduate student at The Hong Kong Polytechnic University, transitioning to an MSc in Robotics at The Chinese University of Hong Kong. 
+            </p>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">
+                My research and engineering interests span <strong>AI safety, tactile sensor security, and LLM system optimization</strong>. I am passionate about building robust backend architectures and addressing security challenges in embodied intelligence.
+            </p>
         </div>
 
-        <div style="margin-top: 1rem;">
-            <div class="item-header">
-                <h3>The Hong Kong Polytechnic University</h3>
-                <span class="date">Sept. 2022 - Jun. 2026</span>
+        <!-- 最新消息/亮点 区域 -->
+        <div class="card">
+            <h2>News & Highlights</h2>
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-date">2026</span>
+                    <span style="font-size: 0.9rem; color: var(--text-main);">Paper accepted to <strong style="color: var(--accent-color);">ASIA CCS 2026</strong>: <em>Phantom Force: Injecting Adversarial Tactile Perceptions into Embodied Intelligence via EMI</em>.</span>
+                </div>
             </div>
-            <div class="subtitle">BSc (Hons) Computer Science; Minor in Applied Mathematics</div>
-            <p><strong>GPA:</strong> 3.0/4.3</p>
-            <p><strong>Core Courses:</strong> Intro to AI and Data Analytics, Programming Fundamentals, Data Structures, OOP, Database Systems, Discrete Mathematics, Statistical Inference, Big Data Analytics, AI of Things, Computational Methods.</p>
-            <p><strong>Achievements:</strong></p>
-            <ul>
-                <li>Au Bak Ling Charity Trust Scholarship 2024/25 (30,000 HKD)</li>
-                <li>Second Prize, Case-based Competition on Helping Disabled Learners Using Apple Vision Pro (04/2025)</li>
-                <li>Ascend AI Development Essentials, HUAWEI</li>
-                <li>Fundamentals of Deep Learning, NVIDIA</li>
-            </ul>
-        </div>
-    </section>
-
-    <section id="publications">
-        <h2>Publications</h2>
-        <p>
-            Zirui Kong, Youqian Zhang, Sze Yiu Chau. 2026. 
-            <span class="publication-title">Phantom Force: Injecting Adversarial Tactile Perceptions into Embodied Intelligence via EMI.</span> 
-            In Proceedings of the 21st ACM Asia Conference on Computer and Communications Security (ASIA CCS '26). 
-            <a href="https://doi.org/10.1145/3779208.3804894" target="_blank">https://doi.org/10.1145/3779208.3804894</a>
-        </p>
-    </section>
-
-    <section id="research-experience">
-        <h2>Research & Project Experience</h2>
-
-        <div>
-            <div class="item-header">
-                <h3>AI Safety Research</h3>
-                <span class="date">09/2025 - Present</span>
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-date">04/2025</span>
+                    <span style="font-size: 0.9rem; color: var(--text-main);">Won <strong style="color: var(--accent-color);">Second Prize</strong> in Case-based Competition on Helping Disabled Learners Using Apple Vision Pro.</span>
+                </div>
             </div>
-            <div class="subtitle">Research Assistant | Supervisor: Dr. ZHANG Youqian</div>
-            <ul>
-                <li>Conducted research on tactile sensor security in embodied robots, focusing on EMI-based adversarial attacks on Hall-effect fingertip sensors.</li>
-                <li>Evaluated how targeted signal injection can distort force perception and disrupt learning-based tactile classification.</li>
-                <li>Identified robotic safety risks caused by compromised tactile sensing during manipulation tasks.</li>
-                <li>Published a poster accepted at ACM ASIACCS 2026.</li>
-            </ul>
+            <div class="item">
+                <div class="item-header">
+                    <span class="item-date">2024</span>
+                    <span style="font-size: 0.9rem; color: var(--text-main);">Awarded the Au Bak Ling Charity Trust Scholarship (30,000 HKD).</span>
+                </div>
+            </div>
         </div>
 
-        <div style="margin-top: 1.5rem;">
-            <div class="item-header">
-                <h3>Compress-Transfer-Decompress for LLM Serving</h3>
-                <span class="date">09/2025 - 04/2026</span>
+        <!-- 论文发表 区域 (满宽) -->
+        <div class="card full-width" id="publications">
+            <h2>Publications</h2>
+            <div class="item">
+                <div class="item-title" style="color: var(--text-main);">
+                    Phantom Force: Injecting Adversarial Tactile Perceptions into Embodied Intelligence via EMI
+                </div>
+                <div style="font-size: 0.95rem; color: var(--text-muted); margin-top: 0.3rem;">
+                    <strong>Zirui Kong</strong>, Youqian Zhang, Sze Yiu Chau.
+                </div>
+                <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.3rem;">
+                    <em>In Proceedings of the 21st ACM Asia Conference on Computer and Communications Security (ASIA CCS '26).</em>
+                    <a href="https://doi.org/10.1145/3779208.3804894" target="_blank" class="highlight-link" style="margin-left: 0.5rem;">[DOI Link]</a>
+                </div>
             </div>
-            <div class="subtitle">LLM Systems Engineer / C++ Backend Developer</div>
-            <ul>
-                <li>Engineered a "Compress-Transfer-Decompress" pipeline in vLLM via Monkey-Patching to overcome PCIe bottlenecks during KV cache swapping.</li>
-                <li>Developed a high-performance C++ PyBind11 wrapper for cuSZp, implementing dynamic error-bound scaling for GPU-accelerated tensor compression.</li>
-                <li>Achieved a 3.06× compression ratio and 2.08× Swap-In speedup across eight LLMs, safely preserving generation quality at a 10-4 error bound.</li>
-            </ul>
         </div>
 
-        <div style="margin-top: 1.5rem;">
-            <div class="item-header">
-                <h3>Case-based Competition: Apple Vision Pro for Disabled Learners</h3>
-                <span class="date">02/2025 - 12/2025</span>
+        <!-- 科研与项目经验 (满宽) -->
+        <div class="card full-width" id="experience">
+            <h2>Research & Project Experience</h2>
+            
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">AI Safety Research</div>
+                    <div class="item-date">09/2025 - Present</div>
+                </div>
+                <div class="item-subtitle">Research Assistant | Supervisor: Dr. ZHANG Youqian</div>
+                <ul>
+                    <li>Conducted research on tactile sensor security in embodied robots, focusing on EMI-based adversarial attacks on Hall-effect fingertip sensors.</li>
+                    <li>Evaluated how targeted signal injection can distort force perception and disrupt learning-based tactile classification.</li>
+                    <li>Identified robotic safety risks caused by compromised tactile sensing during manipulation tasks.</li>
+                </ul>
             </div>
-            <div class="subtitle">Full Stack Developer</div>
-            <ul>
-                <li>Designed and implemented the front-end and visualization dashboard of an end-to-end solution for real-time monitoring and personalized intervention.</li>
-                <li>Developed multi-modal input–output pipelines, state management, and performance optimization.</li>
-                <li>Applied accessibility and HCI principles to support vulnerable users and built secure integration workflows for LLM capabilities.</li>
-            </ul>
+
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Compress-Transfer-Decompress for LLM Serving</div>
+                    <div class="item-date">09/2025 - 04/2026</div>
+                </div>
+                <div class="item-subtitle">LLM Systems Engineer / C++ Backend Developer</div>
+                <ul>
+                    <li>Engineered a "Compress-Transfer-Decompress" pipeline in vLLM via Monkey-Patching to overcome PCIe bottlenecks during KV cache swapping.</li>
+                    <li>Developed a high-performance C++ PyBind11 wrapper for cuSZp, implementing dynamic error-bound scaling for GPU-accelerated tensor compression.</li>
+                    <li>Achieved a 3.06× compression ratio and 2.08× Swap-In speedup across eight LLMs, safely preserving generation quality.</li>
+                </ul>
+            </div>
+
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Apple Vision Pro for Disabled Learners</div>
+                    <div class="item-date">02/2025 - 12/2025</div>
+                </div>
+                <div class="item-subtitle">Full Stack Developer</div>
+                <ul>
+                    <li>Designed and implemented the front-end and visualization dashboard of an end-to-end solution, enabling real-time monitoring.</li>
+                    <li>Developed multi-modal input–output pipelines, state management, and performance optimization.</li>
+                </ul>
+            </div>
         </div>
 
-        <div style="margin-top: 1.5rem;">
-            <div class="item-header">
-                <h3>Course Information & Evaluation System (CBS)</h3>
-                <span class="date">03/2024 - 08/2024</span>
+        <!-- 教育背景 -->
+        <div class="card" id="education">
+            <h2>Education</h2>
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">The Chinese University of Hong Kong</div>
+                    <div class="item-date">2026 - 2027</div>
+                </div>
+                <div class="item-subtitle">MSc (Hons) Robotics</div>
             </div>
-            <div class="subtitle">Front-end Developer & Designer</div>
-            <ul>
-                <li>Developed the overall front-end architecture and component system using Vue 3 and collaborated with backend engineers to define API contracts.</li>
-                <li>Conducted user interviews and iterative prototyping to refine information architecture and interaction flows.</li>
-                <li>Implemented front-end observability, access control, and input validation.</li>
-            </ul>
-        </div>
-    </section>
-
-    <section id="internships">
-        <h2>Internships</h2>
-
-        <div>
-            <div class="item-header">
-                <h3>iFLYTEK Co., Ltd.</h3>
-                <span class="date">07/2025 - 08/2025</span>
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">The Hong Kong Polytechnic University</div>
+                    <div class="item-date">2022 - 2026</div>
+                </div>
+                <div class="item-subtitle">BSc (Hons) Computer Science</div>
+                <ul>
+                    <li><strong>Minor:</strong> Applied Mathematics</li>
+                    <li><strong>Certifications:</strong> HUAWEI Ascend AI, NVIDIA Fundamentals of Deep Learning</li>
+                </ul>
             </div>
-            <div class="subtitle">Speech Feature & Internal Product Test Developer | Hefei, China</div>
-            <ul>
-                <li>Designed test cases and datasets, implemented automated testing scripts and result analysis in Python, and participated in regression testing.</li>
-                <li>Applied data-driven QA, A/B testing, and statistical significance analysis.</li>
-                <li>Introduced data snapshots, environment locking (containerization), and structured logging to improve reproducibility and testing efficiency.</li>
-            </ul>
         </div>
 
-        <div style="margin-top: 1.5rem;">
-            <div class="item-header">
-                <h3>Sina Com Technology (China) Co. LTD</h3>
-                <span class="date">05/2025 - 07/2025</span>
+        <!-- 实习与经历 -->
+        <div class="card">
+            <h2>Internships & Leadership</h2>
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">iFLYTEK Co., Ltd.</div>
+                    <div class="item-date">07/2025 - 08/2025</div>
+                </div>
+                <div class="item-subtitle">Test Developer | Hefei, China</div>
+                <ul>
+                    <li>Implemented automated testing scripts in Python; introduced environment containerization.</li>
+                </ul>
             </div>
-            <div class="subtitle">Intern, Sina Automotive Department | Beijing, China</div>
-            <ul>
-                <li>Designed Agent workflows and integrated tool calls, developed API wrappers and prompt templates, and conducted small-scale user testing.</li>
-                <li>Implemented multi-layer validation, least-privilege design, and rollbackable conversation state management.</li>
-            </ul>
-        </div>
-    </section>
-
-    <section id="leadership">
-        <h2>Campus Involvement & Leadership</h2>
-
-        <div>
-            <div class="item-header">
-                <h3>Socially Responsible Global Leadership in a Digital World</h3>
-                <span class="date">07/2024 - 08/2024</span>
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Sina Com Technology</div>
+                    <div class="item-date">05/2025 - 07/2025</div>
+                </div>
+                <div class="item-subtitle">Intern | Beijing, China</div>
+                <ul>
+                    <li>Designed Agent workflows and integrated tool calls; developed API wrappers.</li>
+                </ul>
             </div>
-            <div class="subtitle">Participant & Designer | Rwanda Team</div>
-            <ul>
-                <li>Focused on improving electricity supply for low-income families by constructing and renovating solar energy systems in Rwanda.</li>
-                <li>Communicated with local students and installed over 400 solar power systems for impoverished families in mountainous areas.</li>
-            </ul>
+            <div class="item">
+                <div class="item-header">
+                    <div class="item-title">Global Leadership Project (Rwanda)</div>
+                    <div class="item-date">07/2024 - 08/2024</div>
+                </div>
+                <div class="item-subtitle">Participant & Designer</div>
+            </div>
         </div>
-    </section>
 
-    <footer style="margin-top: 3rem; text-align: center; font-size: 0.85rem; color: #484f58;">
-        <p>&copy; 2026 Zirui Kong. Last updated: June 2026.</p>
+    </main>
+
+    <footer style="margin-top: 3rem; text-align: center; font-size: 0.85rem; color: var(--border-color); padding-bottom: 2rem;">
+        <p>&copy; 2026 Zirui Kong.</p>
     </footer>
 
 </body>
